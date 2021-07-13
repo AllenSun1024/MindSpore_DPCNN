@@ -2,9 +2,9 @@ import os
 from mindspore.mindrecord import FileWriter
 import mindspore.dataset as ds
 
-print("\n开始构造数据集...")
 
 '''将原始数据转换为mindrecord'''
+print("\n开始构造数据集...")
 
 MINDRECORD_FILE = "text_label.mindrecord"
 if os.path.exists(MINDRECORD_FILE):
@@ -21,13 +21,13 @@ writer.add_index(["text", "label"])
 with open("text_data", "r") as f:
     for i in range(5331):
         data = []
-        line = f.readline()
+        line = f.readline().strip()
         sample = {"text": line, "label": 1}
         data.append(sample)
         writer.write_raw_data(data)
     for i in range(5331):
         data = []
-        line = f.readline()
+        line = f.readline().strip()
         sample = {"text": line, "label": 0}
         data.append(sample)
         writer.write_raw_data(data)
@@ -36,7 +36,7 @@ writer.commit()
 
 '''加载mindrecord数据集'''
 DATA_FILE = ["text_label.mindrecord"]
-
+global mindrecord_dataset
 mindrecord_dataset = ds.MindDataset(DATA_FILE)
 
 print("数据集构造完毕!\n")
