@@ -2,7 +2,6 @@ import os
 from mindspore.mindrecord import FileWriter
 import mindspore.dataset as ds
 
-
 '''将原始数据转换为mindrecord'''
 print("\n开始构造数据集...")
 
@@ -32,7 +31,6 @@ with open("text_data", "r") as f:
         data.append(sample)
         writer.write_raw_data(data)
 writer.commit()
-
 
 '''加载mindrecord数据集'''
 DATA_FILE = ["text_label.mindrecord"]
