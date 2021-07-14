@@ -3,6 +3,7 @@ import mindspore.dataset.transforms.c_transforms as ct
 
 class PreProcessor:
     def __init__(self, dataset):
+        print("\n开始数据预处理...")
         self.dataset = dataset
         self.vocabulary = None
 
@@ -23,3 +24,7 @@ class PreProcessor:
 
     def shuffle_dataset(self):
         self.dataset = self.dataset.shuffle(buffer_size=100)
+
+    def set_batch(self):
+        self.dataset = self.dataset.batch(batch_size=32)
+        print("数据预处理完毕!\n")
