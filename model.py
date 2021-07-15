@@ -17,7 +17,6 @@ class DPCNN(nn.Cell):
 
     def construct(self, x):
         x = self.embedding(x)
-        print("test: {}".format(x.shape))
         x = self.expend_dims(x, 1)
         x = self.conv_region(x)
         x = self.padding1(x)
@@ -26,10 +25,8 @@ class DPCNN(nn.Cell):
         x = self.padding1(x)
         x = self.relu(x)
         x = self.conv(x)
-        print(x.shape)
         while x.shape[2] > 2:
             x = self._block(x)
-            print(x.shape)
         x = self.squeeze(x)
         x = self.fc(x)
         return x

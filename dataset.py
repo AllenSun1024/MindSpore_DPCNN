@@ -38,3 +38,21 @@ global mindrecord_dataset
 mindrecord_dataset = ds.MindDataset(DATA_FILE)
 
 print("数据集构造完毕!\n")
+
+
+'''基于mindrecord_dataset实现可迭代的数据集类'''
+class NewDataset:
+    def __init__(self, raw_dataset):
+        self.datas = []
+        self.labels = []
+        for item in raw_dataset.create_dict_iterator(output_numpy=True):
+            x = item["index"]
+            y = item["label"]
+            self.datas.append(x)
+            self.labels.append(y)
+
+    def __getitem__(self, index):
+        return self.datas[index], self.labels[index]
+
+    def __len__(self):
+        return len(self.datas)
