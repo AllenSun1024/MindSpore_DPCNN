@@ -16,7 +16,7 @@ class PreProcessor:
         self.dataset = self.dataset.map(operations=tokenize_op, input_columns=["text"])
 
     def build_vocabulary(self):
-        self.vocabulary = self.dataset.build_vocab(columns=["text"], freq_range=(2, 10000), top_k=8000, special_tokens=["<pad>", "<unk>"], special_first=True)
+        self.vocabulary = self.dataset.build_vocab(columns=["text"], freq_range=(2, 6000), top_k=6000, special_tokens=["<pad>", "<unk>"], special_first=True)
 
     def word_to_idx(self):
         look_up = text.Lookup(self.vocabulary, unknown_token="<unk>")

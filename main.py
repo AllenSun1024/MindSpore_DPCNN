@@ -23,8 +23,8 @@ test_dataset = data_processor.test_data
 
 '''训练模型'''
 model = DPCNN()
-train(model, train_dataset)
+check_file_path = train(model, train_dataset)
 
 '''测试模型'''
 model = DPCNN()
-test(model, test_dataset)
+test(model, test_dataset, check_file_path)

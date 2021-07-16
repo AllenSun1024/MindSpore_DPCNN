@@ -5,6 +5,7 @@ from mindspore.train.callback import CheckpointConfig, ModelCheckpoint
 from mindspore.train.callback import LossMonitor, TimeMonitor
 from mindspore.train.serialization import load_checkpoint, load_param_into_net
 
+
 def train(model, train_dataset):
     criterion = nn.SoftmaxCrossEntropyWithLogits(sparse=True, reduction="mean")
     optimizer = nn.Adam(params=model.trainable_params(), learning_rate=0.001)
@@ -13,22 +14,24 @@ def train(model, train_dataset):
     config = CheckpointConfig(save_checkpoint_steps=train_dataset.get_dataset_size() * 2,
                               keep_checkpoint_max=5)
     check_point = ModelCheckpoint(prefix="DPCNN",
-                                  directory="/home/ubuntu/disk2/AllenSun_Projects/DPCNN_MindSpore/check_point",
+                                  directory="/home/ubuntu/disk2/AllenSun_Projects/TC_paras/check_point",
                                   config=config)
     loss_monitor = LossMonitor()
     time_monitor = TimeMonitor(data_size=train_dataset.get_dataset_size())
-    model.train(epoch=10, train_dataset=train_dataset,
+    model.train(epoch=12, train_dataset=train_dataset,
                 callbacks=[time_monitor, loss_monitor, check_point], dataset_sink_mode=False)
     print("模型训练完毕!\n")
+    print("This is file name: ", check_point._latest_ckpt_file_name)
+    return check_point._latest_ckpt_file_name
 
 
-def test(model, test_dataset):
+def test(model, test_dataset, check_file_path):
     criterion = nn.SoftmaxCrossEntropyWithLogits(sparse=True, reduction="mean")
     model_new = Model(model, criterion, metrics={
         'acc': Accuracy()
     })
     print("\n开始测试模型...")
-    params = load_checkpoint("/home/ubuntu/disk2/AllenSun_Projects/DPCNN_MindSpore/check_point/DPCNN-1_266.ckpt")
+    params = load_checkpoint(check_file_path)
     load_param_into_net(model, params)
     acc = model_new.eval(test_dataset, dataset_sink_mode=False)
     print("模型测试准确率：{}\n".format(acc))
